@@ -1,0 +1,19 @@
+services:
+  traffic-light-manager:
+    build: .
+    networks:
+      - traffic-light-network
+    environment:
+      - UDP_PORT=5005
+
+  traffic-light-subscriber:
+    build: .
+    networks:
+      - traffic-light-network
+    command: [ "python3", "-u", "src/dds_subscriber.py" ]
+    depends_on:
+      - traffic-light-manager
+
+networks:
+  traffic-light-network:
+    driver: bridge
