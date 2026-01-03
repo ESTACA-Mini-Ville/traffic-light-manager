@@ -52,7 +52,11 @@ RUN git clone https://github.com/eProsima/Fast-DDS-python.git \
     && make -j$(nproc) && make install
 
 # Install Java for fastddsgen
-RUN apt-get update && apt-get install -y default-jre && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install -y default-jre && rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y \
+    openjdk-17-jdk \
+    && rm -rf /var/lib/apt/lists/*
+
 
 # Install fastddsgen
 RUN git clone --recursive https://github.com/eProsima/Fast-DDS-Gen.git \
@@ -84,3 +88,4 @@ RUN mkdir -p src/idl_build \
     && cp *.so ..
 
 CMD ["python3", "-u", "src/main.py"]
+ga
