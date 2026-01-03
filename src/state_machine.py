@@ -25,11 +25,11 @@ class TrafficLightManager:
         
         # Durations in seconds
         self.durations = {
-            TrafficLightState.A_GREEN: 5.0,
-            TrafficLightState.A_ORANGE: 2.0,
+            TrafficLightState.A_GREEN: 20.0,
+            TrafficLightState.A_ORANGE: 3.0,
             TrafficLightState.ALL_RED: 1.0,
-            TrafficLightState.B_GREEN: 5.0,
-            TrafficLightState.B_ORANGE: 2.0,
+            TrafficLightState.B_GREEN: 20.0,
+            TrafficLightState.B_ORANGE: 3.0,
         }
 
     def get_next_state(self, current: TrafficLightState) -> TrafficLightState:
