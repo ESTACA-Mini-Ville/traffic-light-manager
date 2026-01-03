@@ -1,12 +1,9 @@
 import time
 import logging
 import fastdds
+
 # Import generated classes
-# fastddsgen generates files like TrafficLight.py (if that's the module name) or classes in the file.
-# Usually it generates a module per IDL or classes in the output dir.
-# Assuming fastddsgen -python -d src/ src/TrafficLight.idl generates TrafficLight.py containing the classes.
-# We might need to check the generated structure, but standard behavior is:
-import TrafficLight
+import idl_types
 
 class DDSPublisher:
     def __init__(self, topic_name: str = "TrafficLightStatus", domain_id: int = 0):
@@ -30,7 +27,7 @@ class DDSPublisher:
             raise RuntimeError("Failed to create DomainParticipant")
 
         # Register Type using generated class
-        self.topic_data_type = TrafficLight.TrafficLightStatusPubSubType()
+        self.topic_data_type = idl_types.TrafficLightStatusPubSubType()
         self.type_support = fastdds.TypeSupport(self.topic_data_type)
         self.participant.register_type(self.type_support)
 
@@ -57,7 +54,7 @@ class DDSPublisher:
             return
 
         # Create instance of generated class
-        data = TrafficLight.TrafficLightStatus()
+        data = idl_types.TrafficLightStatus()
         data.current_state(current_state)
         data.timestamp(time.time())
         
@@ -68,7 +65,7 @@ class DDSPublisher:
         
         schedule_seq = []
         for item in schedule:
-            sched_item = TrafficLight.ScheduleItem()
+            sched_item = idl_types.ScheduleItem()
             sched_item.state(int(item.state))
             sched_item.start_time(item.start_time)
             sched_item.duration(item.duration)

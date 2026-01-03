@@ -77,15 +77,17 @@ COPY requirements.txt .
 
 COPY src/ ./src/
 
+COPY types ./src/types
+
 # Generate and compile IDL Python code
-RUN mkdir -p src/idl_build \
-    && cp src/TrafficLight.idl src/idl_build/ \
-    && cd src/idl_build \
-    && fastddsgen -python TrafficLight.idl \
-    && cmake . \
+RUN cd src/types \
+    # Rename types.idl to idl_types.idl to avoid shadowing Python stdlib `types` module
+    && mv types.idl idl_types.idl \
+    && fastddsgen -python idl_types.idl \
+    # Ensure generated headers in sub-folders are visible to the compiler (SWIG wrapper includes plain header names)
+    && cmake . -DCMAKE_CXX_FLAGS="-I$(pwd) -I$(pwd)/miniville_msgs -I$(pwd)/geometry_msgs -I$(pwd)/std_msgs" \
     && cmake --build . \
     && cp *.py .. \
     && cp *.so ..
 
 CMD ["python3", "-u", "src/main.py"]
-ga

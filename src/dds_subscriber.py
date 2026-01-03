@@ -1,7 +1,8 @@
 import time
 import logging
 import fastdds
-import TrafficLight
+
+import idl_types
 
 class DDSSubscriber:
     def __init__(self, topic_name: str = "TrafficLightStatus", domain_id: int = 0):
@@ -25,7 +26,7 @@ class DDSSubscriber:
             raise RuntimeError("Failed to create DomainParticipant")
 
         # Register Type
-        self.topic_data_type = TrafficLight.TrafficLightStatusPubSubType()
+        self.topic_data_type = idl_types.TrafficLightStatusPubSubType()
         self.type_support = fastdds.TypeSupport(self.topic_data_type)
         self.participant.register_type(self.type_support)
 
@@ -50,7 +51,7 @@ class DDSSubscriber:
             while True:
                 if self.reader is not None:
                     info = fastdds.SampleInfo()
-                    data = TrafficLight.TrafficLightStatus()
+                    data = idl_types.TrafficLightStatus()
                     if self.reader.take_next_sample(data, info) == fastdds.RETCODE_OK:
                         if info.valid_data:
                             print(f"Received State: {data.current_state()}")
