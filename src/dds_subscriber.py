@@ -5,7 +5,7 @@ import fastdds
 import idl_types
 
 class DDSSubscriber:
-    def __init__(self, topic_name: str = "TrafficLightStatus", domain_id: int = 0):
+    def __init__(self, topic_name: str = "traffic_lights_status", domain_id: int = 0):
         self.topic_name = topic_name
         self.domain_id = domain_id
         self.participant = None
